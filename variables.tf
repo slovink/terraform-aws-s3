@@ -18,18 +18,6 @@ variable "label_order" {
   description = "Label order, e.g. `name`,`application`."
 }
 
-variable "delimiter" {
-  type        = string
-  default     = "-"
-  description = "Delimiter to be used between `organization`, `environment`, `name` and `attributes`."
-}
-
-variable "tags" {
-  type        = map(any)
-  default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
-}
-
 # Module      : S3 BUCKET
 # Description : Terraform S3 Bucket module variables.
 variable "create_bucket" {
@@ -48,12 +36,6 @@ variable "acl" {
   type        = string
   default     = null
   description = "Canned ACL to apply to the S3 bucket."
-}
-
-variable "mfa_delete" {
-  type        = bool
-  default     = false
-  description = "Enable MFA delete for either Change the versioning state of your bucket or Permanently delete an object version."
 }
 
 variable "enable_server_side_encryption" {
@@ -113,81 +95,6 @@ variable "lifecycle_configuration_rules" {
   description = "A list of lifecycle rules"
 }
 
-variable "lifecycle_infrequent_storage_transition_enabled" {
-  type        = bool
-  default     = false
-  description = "Specifies infrequent storage transition lifecycle rule status."
-}
-
-variable "lifecycle_infrequent_storage_object_prefix" {
-  type        = string
-  default     = ""
-  sensitive   = true
-  description = "Object key prefix identifying one or more objects to which the lifecycle rule applies."
-}
-
-variable "lifecycle_days_to_infrequent_storage_transition" {
-  type        = number
-  default     = 60
-  description = "Specifies the number of days after object creation when it will be moved to standard infrequent access storage."
-}
-
-variable "lifecycle_glacier_transition_enabled" {
-  type        = bool
-  default     = false
-  description = "Specifies Glacier transition lifecycle rule status."
-}
-
-variable "lifecycle_glacier_object_prefix" {
-  type        = string
-  default     = ""
-  sensitive   = true
-  description = "Object key prefix identifying one or more objects to which the lifecycle rule applies."
-}
-
-variable "lifecycle_days_to_deep_archive_transition" {
-  type        = number
-  default     = 180
-  description = "Specifies the number of days after object creation when it will be moved to DEEP ARCHIVE ."
-}
-
-variable "lifecycle_deep_archive_transition_enabled" {
-  type        = bool
-  default     = false
-  description = "Specifies DEEP ARCHIVE transition lifecycle rule status."
-}
-
-variable "lifecycle_deep_archive_object_prefix" {
-  type        = string
-  default     = ""
-  sensitive   = true
-  description = "Object key prefix identifying one or more objects to which the lifecycle rule applies."
-}
-
-variable "lifecycle_days_to_glacier_transition" {
-  type        = number
-  default     = 180
-  description = "Specifies the number of days after object creation when it will be moved to Glacier storage."
-}
-
-variable "lifecycle_expiration_enabled" {
-  type        = bool
-  default     = false
-  description = "Specifies expiration lifecycle rule status."
-}
-
-variable "lifecycle_expiration_object_prefix" {
-  type        = string
-  default     = ""
-  description = "Object key prefix identifying one or more objects to which the lifecycle rule applies."
-}
-
-variable "lifecycle_days_to_expiration" {
-  type        = number
-  default     = 365
-  description = "Specifies the number of days after object creation when the object expires."
-}
-
 # Module      : S3 BUCKET POLICY
 # Description : Terraform S3 Bucket Policy module variables.
 variable "aws_iam_policy_document" {
@@ -207,12 +114,6 @@ variable "force_destroy" {
   type        = bool
   default     = false
   description = "A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable."
-}
-
-variable "bucket_prefix" {
-  type        = string
-  default     = null
-  description = " (Optional, Forces new resource) Creates a unique bucket name beginning with the specified prefix."
 }
 
 variable "grants" {
@@ -248,27 +149,6 @@ variable "website_config_enable" {
   type        = bool
   default     = false
   description = "enable or disable aws_s3_bucket_website_configuration"
-}
-
-variable "index_document" {
-  type        = string
-  default     = "index.html"
-  description = "The name of the index document for the website"
-}
-variable "error_document" {
-  type        = string
-  default     = "error.html"
-  description = "he name of the error document for the website "
-}
-variable "routing_rule" {
-  type        = string
-  default     = "docs/"
-  description = "ist of rules that define when a redirect is applied and the redirect behavior "
-}
-variable "redirect" {
-  type        = string
-  default     = "documents/"
-  description = "The redirect behavior for every request to this bucket's website endpoint "
 }
 
 variable "logging" {

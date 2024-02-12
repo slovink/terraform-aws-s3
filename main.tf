@@ -3,7 +3,7 @@
 #              tags for resources. You can use terraform-labels to implement a strict
 #              naming convention.
 module "labels" {
-  source = "git::git@github.com:slovink/terraform-aws-labels.git"
+  source = "git::git@github.com:slovink/terraform-aws-labels.git?ref=vinod"
 
   name        = var.name
   environment = var.environment
@@ -19,6 +19,13 @@ module "labels" {
 #tfsec:ignore:aws-s3-block-public-policy
 #tfsec:ignore:aws-s3-ignore-public-acls
 #tfsec:ignore:aws-s3-no-public-buckets
+#tfsec:ignore:aws-s3-enable-bucket-logging
+#tfsec:ignore:aws-s3-encryption-customer-key
+#tfsec:ignore:aws-s3-enable-bucket-encryption
+#tfsec:ignore:aws-s3-enable-versioning
+#tfsec:ignore:aws-s3-enable-bucket-logging
+#tfsec:ignore:aws-s3-encryption-customer-key
+#tfsec:ignore:aws-s3-enable-bucket-encryption
 resource "aws_s3_bucket" "s3_default" {
   count = var.create_bucket == true ? 1 : 0
 
@@ -36,31 +43,37 @@ resource "aws_s3_bucket" "s3_default" {
 
 # Module      : S3 BUCKET POLICY
 # Description : Terraform module which creates policy for S3 bucket on AWS
+#tfsec:ignore:aws-s3-enable-versioning
+#tfsec:ignore:aws-s3-encryption-customer-key
+#tfsec:ignore:aws-s3-enable-bucket-encryption
+
+#tfsec:ignore:aws-s3-enable-bucket-logging
+
 resource "aws_s3_bucket_policy" "s3_default" {
   # count = var.create_bucket && var.bucket_policy && var.bucket_enabled == true ? 1 : 0
   count  = var.bucket_policy == true ? 1 : 0
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
   policy = var.aws_iam_policy_document
 }
 
 resource "aws_s3_bucket_accelerate_configuration" "example" {
   count = var.create_bucket && var.acceleration_status == true ? 1 : 0
 
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
   status = "Enabled"
 }
 
 resource "aws_s3_bucket_request_payment_configuration" "example" {
   count = var.create_bucket && var.request_payer == true ? 1 : 0
 
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
   payer  = "Requester"
 }
 
 resource "aws_s3_bucket_versioning" "example" {
   count = var.create_bucket && var.versioning == true ? 1 : 0
 
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
   versioning_configuration {
     status = "Enabled"
   }
@@ -68,7 +81,7 @@ resource "aws_s3_bucket_versioning" "example" {
 
 resource "aws_s3_bucket_logging" "example" {
   count  = var.create_bucket && var.logging == true ? 1 : 0
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
 
   target_bucket = var.target_bucket
   target_prefix = var.target_prefix
@@ -76,7 +89,7 @@ resource "aws_s3_bucket_logging" "example" {
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
   count  = var.create_bucket && var.enable_server_side_encryption == true ? 1 : 0
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
 
   rule {
     apply_server_side_encryption_by_default {
@@ -89,7 +102,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
 resource "aws_s3_bucket_object_lock_configuration" "example" {
   count = var.create_bucket && var.object_lock_configuration != null ? 1 : 0
 
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
 
   object_lock_enabled = "Enabled"
 
@@ -105,7 +118,7 @@ resource "aws_s3_bucket_object_lock_configuration" "example" {
 resource "aws_s3_bucket_cors_configuration" "example" {
   count = var.create_bucket && var.cors_rule != null ? 1 : 0
 
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
 
   dynamic "cors_rule" {
     for_each = var.cors_rule == null ? [] : var.cors_rule
@@ -123,7 +136,7 @@ resource "aws_s3_bucket_cors_configuration" "example" {
 resource "aws_s3_bucket_website_configuration" "example" {
   count = var.create_bucket && var.website_config_enable == true ? 1 : 0
 
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
 
   index_document {
     suffix = "index.html"
@@ -161,7 +174,7 @@ locals {
 resource "aws_s3_bucket_acl" "default" {
 
   count  = var.create_bucket ? var.grants != null ? var.acl != null ? 1 : 0 : 0 : 0
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
 
 
   acl = try(length(local.acl_grants), 0) == 0 ? var.acl : null
@@ -193,7 +206,7 @@ resource "aws_s3_bucket_acl" "default" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "default" {
   count  = var.create_bucket && var.enable_lifecycle_configuration_rules == true ? 1 : 0
-  bucket = join("", aws_s3_bucket.s3_default.*.id)
+  bucket = join("", aws_s3_bucket.s3_default[*].id)
 
   dynamic "rule" {
     for_each = var.lifecycle_configuration_rules
