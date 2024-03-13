@@ -4,13 +4,13 @@
 #
 
 # Name of this project
-name : Terraform vpc
+name : Terraform S3
 
 # License of this project
 license: "APACHE"
 
 # Canonical GitHub repo
-github_repo: git@github.com:slovink/terraform-aws-vpc.git
+github_repo: git@github.com:slovink/terraform-aws-s3.git
 
 
 # Badges to display
@@ -20,10 +20,10 @@ badges:
     url: "https://www.terraform.io"
   - name: "Licence"
     image: "https://img.shields.io/badge/License-APACHE-blue.svg"
-    url: "https://github.com/slovink/terraform-aws-vpc/blob/main/LICENSE"
+    url: "https://github.com/slovink/terraform-aws-s3/blob/dev/LICENSE"
   - name: "tfsec"
-    image: "https://github.com/slovink/terraform-aws-vpc/actions/workflows/tfsec.yml/badge.svg"
-    url: "https://github.com/slovink/terraform-aws-vpc/tree/main/.github/workflows/tfsec.yml"
+    image: "https://github.com/slovink/terraform-aws-s3/blob/dev/.github/workflows/tfsec.yml"
+    url: "https://github.com/slovink/terraform-aws-s3/blob/dev/.github/workflows/tfsec.yml"
 
 
 
@@ -42,13 +42,17 @@ usage : |-
   Here is an example of how you can use this module in your inventory structure:
   ```hcl
 
-    module "vpc" {
-      source                = "https://github.com/slovink/terraform-aws-vpc.git?ref=v1.0.0"
-      name                  = "yada"
-      environment           = "test"
-      cidr_block            = "10.0.0.0/16"
-      additional_cidr_block = ["192.3.0.0/16", "192.2.0.0/16"]
+    module "s3-logs_bucket" {
+      source = "https://github.com/slovink/terraform-aws-s3.git?ref=v1.0.0"
+
+      versioning = true
+
+      name        = "slovink-vpc-bucket"
+      environment = "test"
+      label_order = ["environment", "name"]
+
+      acl = "private"
     }
 
-   ```
+  ```
 

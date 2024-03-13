@@ -1,26 +1,40 @@
-
-<p align="center"> <img src="https://user-images.githubusercontent.com/50652676/62349836-882fef80-b51e-11e9-99e3-7b974309c7e3.png" width="100" height="100"></p>
+<<p align="center"> <img src="https://user-images.githubusercontent.com/50652676/62349836-882fef80-b51e-11e9-99e3-7b974309c7e3.png" width="100" height="100"></p>
 
 
 <h1 align="center">
-    Terraform AWS S3
+    Terraform AWS  SES
 </h1>
 
-<p align="center" style="font-size: 1.2rem;">
-    Terraform module to create S3 resource on AWS.
-     </p>
 
 <p align="center">
 
 <a href="https://www.terraform.io">
-  <img src="https://img.shields.io/badge/Terraform-v1.1.7-green" alt="Terraform">
+  <img src="https://img.shields.io/badge/Terraform-v1.7.0-green" alt="Terraform">
 </a>
-<a href="LICENSE.md">
+<a href="https://github.com/slovink/terraform-aws-s3/blob/dev/LICENSE">
   <img src="https://img.shields.io/badge/License-APACHE-blue.svg" alt="Licence">
 </a>
 
 
 
+</p>
+<p align="center">
+
+<a href='https://www.facebook.com/Slovink.in=https://github.com/slovink/terraform-aws-s3'>
+  <img title="Share on Facebook" src="https://user-images.githubusercontent.com/50652676/62817743-4f64cb80-bb59-11e9-90c7-b057252ded50.png" />
+</a>
+<a href='https://www.linkedin.com/company/101534993/admin/feed/posts/=https://github.com/slovink/terraform-aws-s3'>
+  <img title="Share on LinkedIn" src="https://user-images.githubusercontent.com/50652676/62817742-4e339e80-bb59-11e9-87b9-a1f68cae1049.png" />
+</a>
+
+
+
+- [Introduction](#introduction)
+- [Usage](#usage)
+- [Module Inputs](#module-inputs)
+- [Module Outputs](#module-outputs)
+- [Examples](#examples)
+- [License](#license)
 
 
 
@@ -33,36 +47,35 @@ This module has a few dependencies:
 
 
 
-
-
-
-
 ## Examples
+For detailed examples on how to use this module, please refer to the [Examples](https://github.com/slovink/terraform-aws-s3/tree/dev/_example) directory within this repository.
+
+## License
+This Terraform module is provided under the '[License Name]' License. Please see the [LICENSE](https://github.com/slovink/terraform-aws-s3/blob/dev/LICENSE) file for more details.
 
 
-**IMPORTANT:** Since the `master` branch used in `source` varies based on new modifications, we suggest that you use the release versions [here](https://github.com/slovink/terraform-aws-s3/releases).
 
 
 ### Simple Example
 Here is an example of how you can use this module in your inventory structure:
   ```hcl
- module "s3-logs_bucket" {
-  source = "./../"
+    module "s3-logs_bucket" {
+      source = "https://github.com/slovink/terraform-aws-s3.git?ref=v1.0.0"
+      versioning = true
 
-  versioning = true
+      name        = "slovink-vpc-bucket"
+      environment = "test"
+      label_order = ["environment", "name"]
 
-  name        = "venddor-vpc-bucket"
-  environment = "test"
-  label_order = ["environment","name"]
+      acl = "private"
+    }
 
-  acl = "private"
-}
   ```
 
 
 
 ## Feedback
-If you come accross a bug or have any feedback, please log it in our [issue tracker](https://github.com/slovink/terraform-aws-s3/issues), or feel free to drop us an email at [devops@slovink.com](mailto:devops@slovink.com).
+If you come accross a bug or have any feedback, please log it in our [issue tracker](https://github.com/slovink/terraform-aws-s3/issues), or feel free to drop us an email at [contact@slovink.com](concate@slovink.com).
 
 If you have found it worth your time, go ahead and give us a ★ on [our GitHub](https://github.com/slovink/terraform-aws-s3)!
 <!-- BEGIN_TF_DOCS -->
@@ -84,7 +97,7 @@ If you have found it worth your time, go ahead and give us a ★ on [our GitHub]
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_labels"></a> [labels](#module\_labels) | git::git@github.com:slovink/terraform-aws-labels.git | vinod |
+| <a name="module_labels"></a> [labels](#module\_labels) | git::git@github.com:slovink/terraform-aws-labels.git | 1.0.0 |
 
 ## Resources
 
