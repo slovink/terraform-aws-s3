@@ -2,7 +2,7 @@
 
 
 <h1 align="center">
-    Terraform AWS  SES
+    Terraform AWS  S3
 </h1>
 
 
